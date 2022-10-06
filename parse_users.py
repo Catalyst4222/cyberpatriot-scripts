@@ -1,8 +1,8 @@
 import sys
+import argparse
 
 
-
-def parse_readme_users(full_text: str) -> tuple[list[str], list[str]]:
+def parse_readme(full_text: str) -> tuple[list[str], list[str]]:
 
 	admin_block = full.split("\n\n")[0].split("\n")[1:]
 	user_block = full.split("\n\n")[1].split("\n")[1:]
@@ -20,21 +20,24 @@ def parse_readme_users(full_text: str) -> tuple[list[str], list[str]]:
 # print(f"{user_block!r}")
 
 if __name__ == "__main__":
-	if len(sys.argv) < 2:
-		print("Not enough arguments!")
-		exit(-1)
-	if len(sys.argv) > 2:
-		print("Too many arguments!")
-		exit(-2)
+	parser = argparse.ArgumentParser(description='Process the list of users from the README')
+	parser.add_argument("text", help="The block of users from the README. Include the headers for the sections, and the passwords")
+	parser.add_argument("target", choices=["users", "passwords", "both"])
+
+	args = parser.parse_args()
 		
-	full = sys.argv[1]
-	users, passwords = parse_readme_users(full)
-	
-	print("Users:")
-	print("\n".join(users))
-	print()
-	print("Passwords:")
-	print("\n".join(passwords))
+	users, passwords = parse_readme(args.text)
+
+	if args.target == "users":
+		print('\n'.join(users))
+	elif args.target == "passwords":
+		print("\n".join(passwords))
+	elif args.target == "both":
+		print("Users:")
+		print("\n".join(users))
+		print()
+		print("Passwords:")
+		print("\n".join(passwords))
 	
 	
 	
