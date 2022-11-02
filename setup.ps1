@@ -11,3 +11,7 @@ choco install git -y
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
 
+# get the rest of the scripts
+git clone https://github.com/Catalyst4222/cyberpatriot-scripts
+cd cyberpatriot-scripts
+Start-Process powershell run.ps1
