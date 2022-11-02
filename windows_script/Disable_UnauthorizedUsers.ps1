@@ -1,5 +1,4 @@
 # todo turn into a proper script
-param($userlist=$false)
 
 
 function Disable-UnauthorizedUsers {
@@ -18,10 +17,4 @@ function Disable-UnauthorizedUsers {
             } 
         }
     }
-}
-
-
-if($userlist) {
-    $res = python "$PSScriptRoot\parse_users.py" $userlist
-    Disable-UnauthorizedUsers $res
 }
