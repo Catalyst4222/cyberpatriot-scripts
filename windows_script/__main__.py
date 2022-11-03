@@ -37,16 +37,8 @@ while True:
         case "1":
 
             userlist = read_paragraph(
-                "Please copy/paste the user list:\n"
-            )  # seems to work decently
-
-            # userlist_two = read_paragraph("AAAA")  # because of the split line
-            # userlist = userlist_one + "\n\n" + userlist_two
-            #
-            # print(userlist)
-            # users, _ = parse_readme_users(userlist)
-            # print(users)
-            #
+                "Please copy/paste the user list from the readme:\n"
+            ) + "\n\n" + read_paragraph()  # because of the space
 
             run_powershell_script(
                 path / r"Disable_UnauthorizedUsers.ps1", ['"' + userlist + '"']
@@ -54,6 +46,5 @@ while True:
         case "2":
             password = input("Choose the password to set for *every* user\n> ")
             run_powershell_script(
-                path / "Set-GlobalPassword.ps1",
+                path / "Set-GlobalPassword.ps1", [password]
             )
-            print("incomplete")

@@ -14,7 +14,7 @@ function Disable-UnauthorizedUsers {
             Write-Host $user.Name
             if((Read-Host "Do you want to disable this user? (y/n)") -eq "y"){
                 Write-Host "Disabling user..."
-#                 Disable-LocalUser $user.SID
+                Disable-LocalUser $user.SID
             }
         }
     }
