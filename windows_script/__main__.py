@@ -1,4 +1,4 @@
-import pathlib
+﻿import pathlib
 import sys
 from subprocess import PIPE, run
 
@@ -59,5 +59,5 @@ while True:
             
         case "4":
             exe = path / "LGPO.exe"
-            backup = path / "{D1CC5961-1BFA-4A5D-AA9D-6E9237E0BA84}"
+            backup = path / "{5A0A9BEC-72D1-4DD0-A59B-7C14E73ABAA5}"
             run(f"{exe} /g {backup}")
