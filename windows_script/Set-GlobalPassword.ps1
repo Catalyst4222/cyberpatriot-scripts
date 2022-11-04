@@ -6,7 +6,7 @@ function Set-GlobalPassword {
     $pass = ConvertTo-SecureString -String $password -AsPlainText -Force
 
     foreach ($user in Get-LocalUser) {
-        Set-LocalUser -SID $user.SID -Password $pass -PasswordNeverExpires $false -AccountExpires
+        Set-LocalUser -SID $user.SID -Password $pass -PasswordNeverExpires $false
     }
 
     Write-Host "Make sure to check expiration dates and lockouts!"
