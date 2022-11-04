@@ -1,6 +1,6 @@
 import pathlib
 import sys
-from subprocess import PIPE
+from subprocess import PIPE, run
 
 from .parse_users import parse_readme_users
 from .utils import (read_paragraph, run_powershell_command,
@@ -23,6 +23,7 @@ prompt = """Please select an option
 1) Check for unauthorized users
 2) Override every password
 3) Update common software (Firefox, Notepad++)
+4) Import LGPO
 
 0) exit
 > """
@@ -35,8 +36,8 @@ while True:
     match choice:
         case "0":
             exit(0)
+            
         case "1":
-
             userlist = read_paragraph(
                 "Please copy/paste the user list from the readme:\n"
             ) + "\n\n" + read_paragraph()  # because of the space
@@ -44,6 +45,7 @@ while True:
             run_powershell_script(
                 path / r"Disable_UnauthorizedUsers.ps1", ['"' + userlist + '"']
             )
+            
         case "2":
             password = input("Choose the password to set for *every* user\n> ")
             run_powershell_script(
@@ -51,5 +53,11 @@ while True:
             )
             print("\nPlease check that user passwords will expire")
             print("Currently, there's no workable automation to do it")
+            
         case "3":
             run_powershell_command("choco upgrade firefox notepadplusplus")
+            
+        case "4":
+            exe = path / "LGPO.exe"
+            backup = path / "{9755BC65-B34E-44C3-A0E3-83BC371AA010}"
+            run(f"{exe} /g {backup}")
