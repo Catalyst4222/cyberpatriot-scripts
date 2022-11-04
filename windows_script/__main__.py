@@ -22,6 +22,7 @@ print(
 prompt = """Please select an option
 1) Check for unauthorized users
 2) Override every password
+3) Update common software (Firefox, Notepad++)
 
 0) exit
 > """
@@ -48,3 +49,7 @@ while True:
             run_powershell_script(
                 path / "Set-GlobalPassword.ps1", [password]
             )
+            print("\nPlease check that user passwords will expire")
+            print("Currently, there's no workable automation to do it")
+        case "3":
+            run_powershell_command("choco upgrade firefox notepadplusplus")

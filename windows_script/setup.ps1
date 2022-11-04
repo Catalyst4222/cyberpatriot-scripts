@@ -5,7 +5,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocola
 
 # download stuff with chocolatey
 choco feature enable -n allowGlobalConfirmation
-choco install git -y
+choco install git python -y
 
 # refresh environment
 refreshenv
