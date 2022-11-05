@@ -59,5 +59,5 @@ while True:
             
         case "4":
             exe = path / "LGPO.exe"
-            backup = path / "{A6715F61-6A85-4E63-A87D-10F6B6238B51}}"
+            backup = path / "{C8610C31-85FD-49D0-9F4B-D393E80DC44C}"
             run(f"{exe} /g {backup}")
