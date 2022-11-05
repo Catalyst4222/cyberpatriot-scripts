@@ -27,6 +27,7 @@ prompt = """Please select an option
 
 0) exit
 > """
+# todo: admins, firewall, services
 
 path = pathlib.Path(__file__).parent
 
