@@ -25,10 +25,12 @@ prompt = """Please select an option
 3) Update common software (Firefox, Notepad++)
 4) Import LGPO
 5) Enable firewall
+6) Stop services 
 
 0) exit
 > """
-# todo: admins, firewall, services
+# todo: admins, services, remote desktop, internet properties?
+print("Hey check sysinternals")
 
 path = pathlib.Path(__file__).parent
 
@@ -65,3 +67,18 @@ while True:
         case "5":
             run_powershell_command("Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True")
             
+        case "6":
+            to_disable = [
+                "RemoteRegistry",  # Remote Registry
+                "TermService",  # Remote Desktop
+                "lmhosts", # TCP/IP NetBIOS Helper
+                "Spooler",  # Print Spooler
+                # "ssh-agent",  # OpenSSH Authentication Agent
+            ]
+            to_enable = [
+                "Sense",  # Windows Defender Advanced Threat Protection Service
+                "mpssvc",  # Windows Defender Firewall
+                "EventLog",  # Windows Event Log
+                "wuauserv",  # Windows Update
+            ]
+            print("services aren't finished yet!")
