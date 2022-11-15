@@ -24,6 +24,7 @@ prompt = """Please select an option
 2) Override every password
 3) Update common software (Firefox, Notepad++)
 4) Import LGPO
+5) Enable firewall
 
 0) exit
 > """
@@ -52,8 +53,6 @@ while True:
             run_powershell_script(
                 path / "Set-GlobalPassword.ps1", [password]
             )
-            print("\nPlease check that user passwords will expire")
-            print("Currently, there's no workable automation to do it")
             
         case "3":
             run_powershell_command("choco upgrade firefox notepadplusplus")
@@ -62,3 +61,7 @@ while True:
             exe = path / "LGPO.exe"
             backup = path / "{C8610C31-85FD-49D0-9F4B-D393E80DC44C}"
             run(f"{exe} /g {backup}")
+
+        case "5":
+            run_powershell_command("Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True")
+            
