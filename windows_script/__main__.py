@@ -81,4 +81,12 @@ while True:
                 "EventLog",  # Windows Event Log
                 "wuauserv",  # Windows Update
             ]
-            print("services aren't finished yet!")
+            for service in to_disable:
+                run_powershell_command(f"Set-Service -Name {service} -StartupType Disabled -Status Stopped")
+                print(f"Stopped service {service}")
+
+            for service in to_enable:
+                run_powershell_command(f"Set-Service -Name {service} -StartupType Automatic -Status Running")
+                print(f"Started service {service}")
+
+            
