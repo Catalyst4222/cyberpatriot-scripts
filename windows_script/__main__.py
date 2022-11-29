@@ -25,11 +25,12 @@ prompt = """Please select an option
 3) Update common software (Firefox, Notepad++)
 4) Import LGPO
 5) Enable firewall
-6) Stop services 
+6) Stop services
+7) Set UAC to level 2
 
 0) exit
 > """
-# todo: admins, services, remote desktop, internet properties?
+# todo: admins, services, remote desktop, internet properties, ?
 print("Hey check sysinternals")
 
 path = pathlib.Path(__file__).parent
@@ -88,5 +89,9 @@ while True:
             for service in to_enable:
                 run_powershell_command(f"Set-Service -Name {service} -StartupType Automatic -Status Running")
                 print(f"Started service {service}")
+
+        case "7":
+            run_powershell_command(r"Import-Module .\reg.ps1; Set-UACLevel -Level 2")
+            
 
             
