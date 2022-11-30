@@ -27,7 +27,7 @@ prompt = """Please select an option
 5) Enable firewall
 6) Stop services
 7) Set UAC to level 2
-8) Secure and disable remote desktop
+8) Secure and disable remote desktop/remote assistance
 
 0) exit
 > """
