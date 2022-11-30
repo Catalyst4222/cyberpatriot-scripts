@@ -27,10 +27,11 @@ prompt = """Please select an option
 5) Enable firewall
 6) Stop services
 7) Set UAC to level 2
+8) Secure and disable remote desktop
 
 0) exit
 > """
-# todo: admins, services, remote desktop, internet properties, ?
+# todo: admins, services, remote desktop, remote assistance, internet properties, ?
 print("Hey check sysinternals")
 
 path = pathlib.Path(__file__).parent
@@ -92,6 +93,13 @@ while True:
 
         case "7":
             run_powershell_command(r"Import-Module .\reg.ps1; Set-UACLevel -Level 2")
+
+        case "8":
+            # secure remote desktop
+            #run_powershell_command("""(Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName $env:computername -Filter "TerminalName='RDP-tcp'").SetUserAuthenticationRequired(1)""")
             
+            # disable remote desktop
+            #run_powershell_command("Set-ItemProperty -Path ‘HKLM:\System\CurrentControlSet\Control\Terminal Server’-name “fDenyTSConnections” -Value 1")
+            run_powershell_script(r".\rmtdsktp.ps1")
 
             
