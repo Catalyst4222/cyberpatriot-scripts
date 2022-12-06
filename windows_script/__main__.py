@@ -1,5 +1,6 @@
 ﻿import pathlib
 import sys
+import os
 from subprocess import PIPE, run
 
 from .parse_users import parse_readme_users
@@ -28,6 +29,7 @@ prompt = """Please select an option
 6) Stop services
 7) Set UAC to level 2
 8) Secure and disable remote desktop/remote assistance
+9) Search for forbidden files in other user directories
 
 0) exit
 > """
@@ -109,8 +111,29 @@ while True:
             run_powershell_script(r".\rmtdsktp.ps1")
 
         case "9":
-            user = input("What is the name of your user?")
-            for root, dirs, files in os.walk("."):
+            banananned = [
+                "mp4",
+                "mp3",
+                "mac",
+                "exe",
+                "txt",
+                "png",
+                "gif",
+                "jpg",
+                "jpeg",
+                "doc",
+                "password"
+            ]
+            
+            #user = input("What is the name of your user?\n> ")
+            user = pathlib.Path.home().name
+            for root, dirs, files in os.walk(pathlib.Path.home().parent):
                 dirs[:] = [d for d in dirs if d != user]  # do dynamically
                 for name in files:
-                    print(os.path.join(root, name))
+                    for banned in banananned:
+                        if banned in name:
+                            print("Possible bad file found:")
+                            print
+                    #print()
+                            print(os.path.join(root, name))
+                #print(files)
