@@ -3,9 +3,11 @@ import sys
 import os
 from subprocess import PIPE, run
 
-from .parse_users import parse_readme_users
+from .parse_users import parse_readme_users, get_admins
 from .utils import (read_paragraph, run_powershell_command,
                     run_powershell_script)
+import io
+import contextlib
 
 run_powershell_command("clear")
 
@@ -21,7 +23,7 @@ print(
 )
 
 prompt = """Please select an option
-1) Check for unauthorized users
+1) Check for unauthorized users and admins
 2) Override every password
 3) Update common software (Firefox, Notepad++)
 4) Import LGPO
@@ -33,7 +35,7 @@ prompt = """Please select an option
 
 0) exit
 > """
-# todo: admins, services, internet properties, ?
+# todo: admins, services, internet properties, network shares, ?
 print("Hey check sysinternals")
 
 path = pathlib.Path(__file__).parent
@@ -55,6 +57,21 @@ while True:
             run_powershell_script(
                 path / r"Disable_UnauthorizedUsers.ps1", ['"' + userlist + '"']
             )
+
+            # admins
+            admins = get_admins(userlist)
+            #with contextlib.redirect_stdout(out):
+            registered = run_powershell_command(r"""Get-LocalGroupMember -Group Administrators | Where-Object {Write-Host ($_.Name -split "\\")[1]}""", stdout=PIPE).stdout.decode().split("\n")
+            registered = [x for x in registered if x]
+            print(registered)
+        
+            # Get-LocalGroupMember -Group Administrators | Where-Object {Write-Host ($_.Name -split "\\")[1]}
+            bad = set(registered) - (set(registered) & set(admins))
+
+            for baddie in bad:
+                choice = input(f"Remove {baddie} from the Administrators list? (Y/n)\n> ")
+                if choice not in ("n", "N"):
+                    run_powershell_command(f"Remove-LocalGroupMember -Group Administrators -Member {baddie}")
 
         case "2":
             password = input("Choose the password to set for *every* user\n> ")
@@ -136,4 +153,5 @@ while True:
                             print
                     #print()
                             print(os.path.join(root, name))
+                            
                 #print(files)

@@ -15,6 +15,13 @@ def parse_readme_users(full_text: str) -> tuple[list[str], list[str]]:
 
     return all_users, passwords
 
+def get_admins(full_text: str) -> list[str]:
+    admin_block = full_text.split("\n\n")[0].split("\n")[1:]
+    admin_block[0] = admin_block[0][:-6]
+
+    admins = admin_block[::2]
+    return admins
+
 
 # print(f"{admin_block!r}")
 # print(f"{user_block!r}")
