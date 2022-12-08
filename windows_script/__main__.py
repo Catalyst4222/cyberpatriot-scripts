@@ -34,7 +34,7 @@ prompt = """Please select an option
 
 0) exit
 > """
-# todo: admins, services, internet properties, network shares, ?
+# todo: services, internet properties, network shares, ?
 print("Hey check sysinternals")
 
 path = pathlib.Path(__file__).parent
@@ -92,7 +92,7 @@ while True:
 
         case "4":
             exe = path / "LGPO.exe"
-            backup = path / "{C8610C31-85FD-49D0-9F4B-D393E80DC44C}"
+            backup = path / "{56112830-1CD4-4BE9-9011-39F62E012138}"
             run(f"{exe} /g {backup}")
 
         case "5":
@@ -167,5 +167,8 @@ while True:
                             if choice not in ("n", "N"):
                                 place = pathlib.Path(os.path.join(root, name))
                                 place.unlink()
+
+        #case "export lgpo":
+        #    ...
 
                 # print(files)
