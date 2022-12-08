@@ -4,8 +4,7 @@ import os
 from subprocess import PIPE, run
 
 from .parse_users import parse_readme_users, get_admins
-from .utils import (read_paragraph, run_powershell_command,
-                    run_powershell_script)
+from .utils import read_paragraph, run_powershell_command, run_powershell_script
 import io
 import contextlib
 
@@ -60,18 +59,29 @@ while True:
 
             # admins
             admins = get_admins(userlist)
-            #with contextlib.redirect_stdout(out):
-            registered = run_powershell_command(r"""Get-LocalGroupMember -Group Administrators | Where-Object {Write-Host ($_.Name -split "\\")[1]}""", stdout=PIPE).stdout.decode().split("\n")
+            # with contextlib.redirect_stdout(out):
+            registered = (
+                run_powershell_command(
+                    r"""Get-LocalGroupMember -Group Administrators | Where-Object {Write-Host ($_.Name -split "\\")[1]}""",
+                    stdout=PIPE,
+                )
+                .stdout.decode()
+                .split("\n")
+            )
             registered = [x for x in registered if x]
             print(registered)
-        
+
             # Get-LocalGroupMember -Group Administrators | Where-Object {Write-Host ($_.Name -split "\\")[1]}
             bad = set(registered) - (set(registered) & set(admins))
 
             for baddie in bad:
-                choice = input(f"Remove {baddie} from the Administrators list? (Y/n)\n> ")
+                choice = input(
+                    f"Remove {baddie} from the Administrators list? (Y/n)\n> "
+                )
                 if choice not in ("n", "N"):
-                    run_powershell_command(f"Remove-LocalGroupMember -Group Administrators -Member {baddie}")
+                    run_powershell_command(
+                        f"Remove-LocalGroupMember -Group Administrators -Member {baddie}"
+                    )
 
         case "2":
             password = input("Choose the password to set for *every* user\n> ")
@@ -139,10 +149,10 @@ while True:
                 "jpg",
                 "jpeg",
                 "doc",
-                "password"
+                "password",
             ]
-            
-            #user = input("What is the name of your user?\n> ")
+
+            # user = input("What is the name of your user?\n> ")
             user = pathlib.Path.home().name
             for root, dirs, files in os.walk(pathlib.Path.home().parent):
                 dirs[:] = [d for d in dirs if d != user]  # do dynamically
@@ -151,7 +161,11 @@ while True:
                         if banned in name:
                             print("Possible bad file found:")
                             print
-                    #print()
+                            # print()
                             print(os.path.join(root, name))
-                            
-                #print(files)
+                            choice = input("Would you like to remove it? <Y/n>\n> ")
+                            if choice not in ("n", "N"):
+                                place = pathlib.Path(os.path.join(root, name))
+                                place.unlink()
+
+                # print(files)
