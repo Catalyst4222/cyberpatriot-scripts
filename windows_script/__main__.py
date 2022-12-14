@@ -168,7 +168,9 @@ while True:
                                 place = pathlib.Path(os.path.join(root, name))
                                 place.unlink()
 
-        #case "export lgpo":
-        #    ...
+        case "export lgpo":
+            exe = path / "LGPO.exe"
+            export = path.absolute()
+            run_powershell_command(f"{exe} /b {export}")
 
                 # print(files)
