@@ -31,6 +31,7 @@ prompt = """Please select an option
 7) Set UAC to level 2
 8) Secure and disable remote desktop/remote assistance
 9) Search for forbidden files in other user directories
+10) Show every non-default task
 
 0) exit
 > """
@@ -101,6 +102,9 @@ while True:
             )
 
         case "6":
+            # todo
+            #$NonDefaultServices = Get-wmiobject win32_service | where { $_.Caption -notmatch "Windows" -and $_.PathName -notmatch "Windows" -and $_.PathName -notmatch "policyhost.exe" -and $_.Name -ne "LSM" -and $_.PathName -notmatch "OSE.EXE" -and $_.PathName -notmatch "OSPPSVC.EXE" -and $_.PathName -notmatch "Microsoft Security Client" }
+            
             to_disable = [
                 "RemoteRegistry",  # Remote Registry
                 "TermService",  # Remote Desktop
@@ -125,6 +129,11 @@ while True:
                     f"Set-Service -Name {service} -StartupType Automatic -Status Running"
                 )
                 print(f"Started service {service}")
+
+            print()
+            print()
+            print("Here are all the non-default services")
+            run_powershell_command(""" $NonDefaultServices = Get-wmiobject win32_service | where { $_.Caption -notmatch "Windows" -and $_.PathName -notmatch "Windows" -and $_.PathName -notmatch "policyhost.exe" -and $_.Name -ne "LSM" -and $_.PathName -notmatch "OSE.EXE" -and $_.PathName -notmatch "OSPPSVC.EXE" -and $_.PathName -notmatch "Microsoft Security Client" } """)
 
         case "7":
             run_powershell_command(r"Import-Module .\reg.ps1; Set-UACLevel -Level 2")
@@ -167,6 +176,9 @@ while True:
                             if choice not in ("n", "N"):
                                 place = pathlib.Path(os.path.join(root, name))
                                 place.unlink()
+
+        case "10":
+            run_powershell_script(path / "tasks.ps1")
 
         case "export lgpo":
             exe = path / "LGPO.exe"
