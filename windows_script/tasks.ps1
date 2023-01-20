@@ -1,8 +1,9 @@
 #Get all scheduled tasks on the system in a Csv format
 $Tasks = schtasks /query /v /fo csv | ConvertFrom-Csv
 #Filtering out all Windows tasks for Windows 2k3 and 2k12 (and 2k8?)
-$ScheduledTasks = $Tasks | Where-Object { $_.HostName -eq $env:COMPUTERNAME -and $_.Author -ne "N/A" -and $_.'Next Run Time' -ne "N/A" -and $_.Author -notmatch "Microsoft" -and $_.TaskName -notmatch "User_Feed_Synchronization" }
+$ScheduledTasks = $Tasks | Where-Object { $_.HostName -eq $env:COMPUTERNAME -and $_.Author -ne "N/A" -and $_.Author -notmatch "Microsoft" -and $_.TaskName -notmatch "User_Feed_Synchronization" }
 # -and $_.'Scheduled Task State' -ne "Disabled" # <-- Add this to the where-object selection in the line above to filter out disabled tasks as well
+# // -and $_.'Next Run Time' -ne "N/A" 
 
 Foreach($ScheduledTask in $ScheduledTasks)
 {

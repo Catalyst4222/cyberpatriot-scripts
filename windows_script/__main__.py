@@ -31,7 +31,7 @@ prompt = """Please select an option
 7) Set UAC to level 2
 8) Secure and disable remote desktop/remote assistance
 9) Search for forbidden files in other user directories
-10) Show every non-default task
+10) Show every non-default task (may be defective)
 
 0) exit
 > """
@@ -93,7 +93,7 @@ while True:
 
         case "4":
             exe = path / "LGPO.exe"
-            backup = path / "{56112830-1CD4-4BE9-9011-39F62E012138}"
+            backup = path / "{5F45BDA5-2CB5-4B60-AF44-D84A0AC32227}"
             run(f"{exe} /g {backup}")
 
         case "5":
@@ -178,7 +178,8 @@ while True:
                                 place.unlink()
 
         case "10":
-            run_powershell_script(path / "tasks.ps1")
+            print("Loading tasks...")
+            run_powershell_script(path / "tasks.ps1", stdout=sys.stdout)
 
         case "export lgpo":
             exe = path / "LGPO.exe"
